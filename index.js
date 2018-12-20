@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/sms', (req, res) => {
-  const twiml = new Messagingresponse();
+  const twiml = new MessagingResponse();
   twiml.message('The robots');
   res.writeHead(200, { 'Content-Type': 'text/xml' });
   res.end(twiml.toString());
