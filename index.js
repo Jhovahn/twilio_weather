@@ -3,16 +3,22 @@ const axios = require('axios');
 const express = require('express');
 const cheerio = require('cheerio');
 const http = require('http');
-const messagingResponse = require('twilio').twiml.Messagingresponse;
+const twilio = require('twilio');
+
+const messagingResponse = twilio.twiml.Messagingresponse;
 const app = express();
+
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
+const TWILIO_ACCOUNT_SSID = process.env.TWILIO_ACCOUNT_SSID;
+const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
+
 const port = process.env.PORT || 1337;
 
 app.get('/', (req, res) => {
   res.send('hello');
 });
 
-app.post('/test', (req, res) => {
+app.post('/test ', (req, res) => {
   res.send(`Successful post`);
 });
 
