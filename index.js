@@ -6,6 +6,7 @@ const http = require('http');
 const messagingResponse = require('twilio').twiml.Messagingresponse;
 const app = express();
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
+const port = process.env.PORT || 1337;
 
 app.get('/', (req, res) => {
   res.send('hello');
@@ -18,8 +19,8 @@ app.post('/sms', (req, res) => {
   res.end(twiml.toString());
 });
 
-http.createServer(app).listen(1337, () => {
-  console.log(`listening on server port 1337`);
+http.createServer(app).listen(port, () => {
+  console.log(`listening on server port ${port}`);
 });
 
 function weather(zip) {
