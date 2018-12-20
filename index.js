@@ -12,6 +12,19 @@ const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 const TWILIO_ACCOUNT_SSID = process.env.TWILIO_ACCOUNT_SSID;
 const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
 
+const client = new twilio(TWILIO_ACCOUNT_SSID, TWILIO_AUTH_TOKEN);
+
+function message() {
+  return client.messages
+    .create({
+      body: 'hello',
+      to: '+19176916588',
+      from: '+14155944227'
+    })
+    .then(res => console.log(res.sid))
+    .catch(err => console.log(err));
+}
+
 const port = process.env.PORT || 1337;
 
 app.get('/', (req, res) => {
@@ -29,9 +42,9 @@ app.post('/sms', (req, res) => {
   res.end(twiml.toString());
 });
 
-http.createServer(app).listen(port, () => {
-  console.log(`listening on server port ${port}`);
-});
+// http.createServer(app).listen(port, () => {
+//   console.log(`listening on server port ${port}`);
+// });
 
 function weather(zip) {
   let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=${WEATHER_API_KEY}`;
@@ -40,3 +53,5 @@ function weather(zip) {
     .then(res => console.log(res))
     .catch(err => console.log(err));
 }
+
+message();
