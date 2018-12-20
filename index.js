@@ -12,6 +12,10 @@ app.get('/', (req, res) => {
   res.send('hello');
 });
 
+app.post('/test', (req, res) => {
+  res.send(`Successful post`);
+});
+
 app.post('/sms', (req, res) => {
   const twiml = new MessagingResponse();
   twiml.message('The robots');
