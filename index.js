@@ -27,16 +27,16 @@ function message() {
 
 const port = process.env.PORT || 1337;
 
-http.createServer(app).listen(port, () => {
-  console.log(`listening on server port ${port}`);
-});
-
 app.get('/', (req, res) => {
   res.send('hello');
 });
 
-app.post('/test ', (req, res) => {
+app.post('/test', (req, res) => {
   res.send(`Successful post`);
+});
+
+app.get('/test', (req, res) => {
+  res.send(`Successful get`);
 });
 
 app.post('/sms', (req, res) => {
@@ -44,6 +44,10 @@ app.post('/sms', (req, res) => {
   twiml.message('The robots');
   res.writeHead(200, { 'Content-Type': 'text/xml' });
   res.end(twiml.toString());
+});
+
+http.createServer(app).listen(port, () => {
+  console.log(`listening on server port ${port}`);
 });
 
 function weather(zip) {
