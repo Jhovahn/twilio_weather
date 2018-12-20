@@ -27,6 +27,10 @@ function message() {
 
 const port = process.env.PORT || 1337;
 
+http.createServer(app).listen(port, () => {
+  console.log(`listening on server port ${port}`);
+});
+
 app.get('/', (req, res) => {
   res.send('hello');
 });
@@ -42,10 +46,6 @@ app.post('/sms', (req, res) => {
   res.end(twiml.toString());
 });
 
-http.createServer(app).listen(port, () => {
-  console.log(`listening on server port ${port}`);
-});
-
 function weather(zip) {
   let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=${WEATHER_API_KEY}`;
   return axios
@@ -53,5 +53,3 @@ function weather(zip) {
     .then(res => console.log(res))
     .catch(err => console.log(err));
 }
-
-message();
