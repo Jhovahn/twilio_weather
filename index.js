@@ -42,9 +42,9 @@ app.post('/sms', (req, res) => {
   res.end(twiml.toString());
 });
 
-// http.createServer(app).listen(port, () => {
-//   console.log(`listening on server port ${port}`);
-// });
+http.createServer(app).listen(port, () => {
+  console.log(`listening on server port ${port}`);
+});
 
 function weather(zip) {
   let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=${WEATHER_API_KEY}`;
