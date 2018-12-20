@@ -5,7 +5,7 @@ const cheerio = require('cheerio');
 const http = require('http');
 const twilio = require('twilio');
 
-const messagingResponse = twilio.twiml.MessagingResponse;
+const MessagingResponse = twilio.twiml.MessagingResponse;
 const app = express();
 
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
