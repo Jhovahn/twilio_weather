@@ -51,13 +51,6 @@ app.post('/sms', (req, res) => {
   res.end(twiml.toString());
 });
 
-function formatMessage(input) {
-  let text = new MessagingResponse();
-  text.message(input);
-  this.res.writeHead(200, { 'Content-Type': 'text/xml' });
-  this.res.end(text.toString());
-}
-
 app.post('/weather', (req, res) => {
   let zip = req.body.Body;
 
@@ -69,14 +62,16 @@ app.post('/weather', (req, res) => {
       let temp = weather.data.main.temp;
       let city = weather.data.name;
       let message = `It is ${temp} degrees in ${city} with ${description}.`;
-      formatMessage(message);
-      // let text = new MessagingResponse();
-      // text.message(message);
-      // res.writeHead(200, { 'Content-Type': 'text/xml' });
-      // res.end(text.toString());
+      let text = new MessagingResponse();
+      text.message(message);
+      res.writeHead(200, { 'Content-Type': 'text/xml' });
+      res.end(text.toString());
     })
     .catch(error => {
-      // res.send(formatMessage('Invalid Input'));
+      let text = new MessagingResponse();
+      text.message(`Invalid Zip Code`);
+      res.writeHead(200, { 'Content-Type': 'text/xml' });
+      res.end(text.toString());
     });
 });
 
