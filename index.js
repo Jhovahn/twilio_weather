@@ -38,7 +38,7 @@ app.post('/weather', (req, res) => {
       let temp = weather.data.main.temp;
       let city = weather.data.name;
       let country = weather.data.sys.country;
-      let message = `It is ${temp} degrees with ${description} in ${city}, ${country}.`;
+      let message = `It is ${temp} degrees in ${city}, ${country} with ${description}.`;
       let text = new MessagingResponse();
       text.message(message);
       res.writeHead(200, { 'Content-Type': 'text/xml' });
