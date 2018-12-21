@@ -52,7 +52,7 @@ app.post('/sms', (req, res) => {
 });
 
 app.post('/weather', (req, res) => {
-  let zip = req.body.toString(10);
+  let zip = req.body.Body;
   console.log(req.body);
   let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=${WEATHER_API_KEY}&units=imperial`;
   return axios
