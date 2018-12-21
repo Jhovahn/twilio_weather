@@ -45,10 +45,11 @@ app.post('/sms', (req, res) => {
 
 app.post('/weather', (req, res) => {
   let query = req.body.Body;
+  let type = !!Number(query) ? 'zip' : 'q';
 
-  let zurl = `https://api.openweathermap.org/data/2.5/weather?zip=${query},us&APPID=${WEATHER_API_KEY}&units=imperial`;
-  let curl = `https://api.openweathermap.org/data/2.5/weather?q=${query}&APPID=${WEATHER_API_KEY}&units=imperial`;
-  let url = !!Number(query) ? zurl : curl;
+  let url = `https://api.openweathermap.org/data/2.5/weather?${type}=${query}&APPID=${WEATHER_API_KEY}&units=imperial`;
+  // let curl = `https://api.openweathermap.org/data/2.5/weather?${type}=${query}&APPID=${WEATHER_API_KEY}&units=imperial`;
+
   return axios
     .get(url)
     .then(weather => {
@@ -63,7 +64,9 @@ app.post('/weather', (req, res) => {
     })
     .catch(error => {
       let text = new MessagingResponse();
-      text.message(`Invalid Zip Code`);
+      text.message(
+        `Invalid entry. Please enter valid US zip code or city and country ISO code. Format example "Toronto,CA"`
+      );
       res.writeHead(200, { 'Content-Type': 'text/xml' });
       res.end(text.toString());
     });
