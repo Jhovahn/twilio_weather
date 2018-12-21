@@ -19,14 +19,14 @@ const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
 
 const client = new twilio(TWILIO_ACCOUNT_SSID, TWILIO_AUTH_TOKEN);
 
-function message() {
+function message(text) {
   return client.messages
     .create({
-      body: 'hello',
+      body: text,
       to: '+19176916588',
       from: '+14155944227'
     })
-    .then(res => console.log(res.sid))
+    .then(res => console.log(res))
     .catch(err => console.log(err));
 }
 
@@ -52,7 +52,7 @@ app.post('/sms', (req, res) => {
 });
 
 app.post('/weather', (req, res) => {
-  let zip = req.Body;
+  let zip = req.MessageInstance.body;
   console.log(req.body);
   let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=${WEATHER_API_KEY}&units=imperial`;
   return axios
@@ -69,6 +69,8 @@ app.post('/weather', (req, res) => {
     })
     .catch(error => res.send(err));
 });
+
+// message('jhovahn alain gibbs');
 
 http.createServer(app).listen(port, () => {
   console.log(`Listening on server port ${port}`);
