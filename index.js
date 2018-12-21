@@ -47,7 +47,7 @@ app.post('/weather', (req, res) => {
   let query = req.body.Body;
 
   let zurl = `https://api.openweathermap.org/data/2.5/weather?zip=${query},us&APPID=${WEATHER_API_KEY}&units=imperial`;
-  let curl = `https://api.openweathermap.org/data/2.5/weather?q=${query}`;
+  let curl = `https://api.openweathermap.org/data/2.5/weather?q=${query}&APPID=${WEATHER_API_KEY}&units=imperial`;
   let url = !!Number(query) ? zurl : curl;
   return axios
     .get(url)
