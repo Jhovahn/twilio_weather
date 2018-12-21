@@ -33,15 +33,7 @@ function message(text) {
 const port = process.env.PORT || 1337;
 
 app.get('/', (req, res) => {
-  res.send('hello');
-});
-
-app.post('/test', (req, res) => {
-  res.send(`Successful post`);
-});
-
-app.get('/test', (req, res) => {
-  res.send(`Successful get`);
+  res.send('App is up and running!');
 });
 
 app.post('/sms', (req, res) => {
@@ -52,9 +44,11 @@ app.post('/sms', (req, res) => {
 });
 
 app.post('/weather', (req, res) => {
-  let zip = req.body.Body;
+  let query = req.body.Body;
 
-  let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=${WEATHER_API_KEY}&units=imperial`;
+  let zurl = `https://api.openweathermap.org/data/2.5/weather?zip=${query},us&APPID=${WEATHER_API_KEY}&units=imperial`;
+  let curl = `https://api.openweathermap.org/data/2.5/weather?q=${query}`;
+  let url = !!Number(query) ? zurl : curl;
   return axios
     .get(url)
     .then(weather => {
