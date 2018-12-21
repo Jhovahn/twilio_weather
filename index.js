@@ -4,9 +4,14 @@ const express = require('express');
 const cheerio = require('cheerio');
 const http = require('http');
 const twilio = require('twilio');
+const bodyParser = require('body-parser');
 
 const MessagingResponse = twilio.twiml.MessagingResponse;
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.text());
+app.use(bodyParser.json());
 
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 const TWILIO_ACCOUNT_SSID = process.env.TWILIO_ACCOUNT_SSID;
@@ -46,14 +51,24 @@ app.post('/sms', (req, res) => {
   res.end(twiml.toString());
 });
 
-http.createServer(app).listen(port, () => {
-  console.log(`listening on server port ${port}`);
-});
-
-function weather(zip) {
-  let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=${WEATHER_API_KEY}`;
+app.post('/weather', (req, res) => {
+  let zip = req.body;
+  let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=${WEATHER_API_KEY}&units=imperial`;
   return axios
     .get(url)
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
-}
+    .then(weather => {
+      let description = weather.data.weather[0].description;
+      let temp = weather.data.main.temp;
+      let city = weather.data.name;
+      let message = `It is ${temp} degrees in ${city} with ${description}.`;
+      let text = new MessagingResponse();
+      text.message(message);
+      res.writeHead(200, { 'Content-Type': 'text/xml' });
+      res.end(text.toString());
+    })
+    .catch(error => console.log(error));
+});
+
+http.createServer(app).listen(port, () => {
+  console.log(`Listening on server port ${port}`);
+});
