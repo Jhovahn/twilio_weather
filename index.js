@@ -66,7 +66,7 @@ app.post('/weather', (req, res) => {
       res.writeHead(200, { 'Content-Type': 'text/xml' });
       res.end(text.toString());
     })
-    .catch(error => console.log(error));
+    .catch(error => res.send(err));
 });
 
 http.createServer(app).listen(port, () => {
