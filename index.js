@@ -53,7 +53,7 @@ app.post('/sms', (req, res) => {
 
 function formatMessage(input) {
   let text = new MessagingResponse();
-  text.message(message);
+  text.message(input);
   res.writeHead(200, { 'Content-Type': 'text/xml' });
   res.end(text.toString());
 }
@@ -71,12 +71,13 @@ app.post('/weather', (req, res) => {
       let message = `It is ${temp} degrees in ${city} with ${description}.`;
       formatMessage(message);
       // let text = new MessagingResponse();
-
       // text.message(message);
       // res.writeHead(200, { 'Content-Type': 'text/xml' });
       // res.end(text.toString());
     })
-    .catch(error => res.send(err));
+    .catch(error => {
+      res.send(formatMessage('Invalid Input'));
+    });
 });
 
 http.createServer(app).listen(port, () => {
