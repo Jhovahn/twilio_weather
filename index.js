@@ -32,11 +32,12 @@ app.post('/weather', (req, res) => {
 
   return axios
     .get(url)
-    .then(weather => {
-      let description = weather.data.weather[0].description;
-      let temp = weather.data.main.temp;
-      let city = weather.data.name;
-      let country = weather.data.sys.country;
+    .then(info => {
+      let { weather, main, name, sys } = info.data;
+      let description = weather[0].description;
+      let temp = main.temp;
+      let city = name;
+      let country = sys.country;
       let message = `It is ${temp} degrees in ${city}, ${country} with ${description}.`;
       let text = new MessagingResponse();
       text.message(message);
@@ -44,10 +45,10 @@ app.post('/weather', (req, res) => {
       res.end(text.toString());
     })
     .catch(error => {
-      console.log(error);
       let text = new MessagingResponse();
+      console.log(error);
       text.message(
-        `Invalid entry. Please enter valid US zip code or city. eg. Toronto, CA`
+        `Invalid entry. Please enter valid US zip code or international city, country code eg. Toronto, CA.`
       );
       res.writeHead(200, { 'Content-Type': 'text/xml' });
       res.end(text.toString());
