@@ -46,7 +46,6 @@ app.post('/weather', (req, res) => {
     })
     .catch(error => {
       let text = new MessagingResponse();
-      console.log(error);
       text.message(
         `Invalid entry. Please enter valid US zip code or international city, country code eg. Toronto, CA.`
       );
